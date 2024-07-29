@@ -27,7 +27,7 @@ https://sinca.mma.gob.cl/index.php/estacion/index/id/259
 - **Language**: [Python 3.x](https://www.python.org/): Python is a programming language that lets you work quickly
   and integrate systems more effectively.
 - **Libraries**:
-- 
+Ver archivo environment.yml
 
 ## Credits
 
