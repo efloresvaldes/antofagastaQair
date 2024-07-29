@@ -10,7 +10,14 @@ import secciones_web.qair as qair_section
 import utils.cleaning_data_functions as cdf
 
 df = pd.read_csv('../data/qair.csv', delimiter=';')
-variables_a_considerar = ['Temperatura Media', 'RV1', 'RV2', 'RV3']
+#Cambiando el nmbre de las columnas del dataframe para mejor comprensión
+df.rename(columns={"RV1": "SO2", "RV2": "MP10","RV3": "MP2.5"}, inplace=True)
+
+variables_a_considerar = ['Temperatura Media', 'SO2', 'MP10', 'MP2.5']
+
+
+# Ajustando el ancho del layout
+st.set_page_config(layout="wide")
 
 # Título de la aplicación
 st.title("Datos de Calidad del Aire en Antofagasta")
@@ -20,8 +27,8 @@ with st.sidebar:
     #st.logo('assets/logo_qair_rect.png', use_column_width='auto')  # Insertar la imagen del logo
     selected = option_menu(
         "Calidad del Aire",
-        ["Inicio", "Análisis Univariante", "Análisis Bivariante", "Análisis de Correlación", "Estimación QAir"],
-        icons=["house", "bar-chart", "file-bar-graph", "diagram-3", "graph-up"],
+        ["Inicio", "Análisis Univariante", "Análisis Bivariante", "Análisis de Correlación"],
+        icons=["house", "bar-chart", "file-bar-graph", "diagram-3"],
         menu_icon="cast",
         default_index=0,
         styles={
@@ -45,7 +52,10 @@ elif selected == "Análisis Univariante":
 elif selected == "Análisis Bivariante":
     bivariante_section.main(df, variables_a_considerar)
 elif selected == "Análisis de Correlación":
-    correlacion_section.main(df, ['Temperatura Media', 'RV1', 'RV2', 'RV3'])
-elif selected == "Estimación QAir":
+    correlacion_section.main(df, variables_a_considerar)
+    """
+    elif selected == "Estimación QAir":
     df = cdf.sparseDates(df, 'Fecha')
     qair_section.main(df)
+    """
+

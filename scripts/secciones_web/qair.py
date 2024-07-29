@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 def main(data):
     # Preparar los datos
 
-    X = data[['Temperatura Media', 'fecha-num']]
-    y_so2 = data['RV1']
-    y_mp10 = data['RV2']
-    y_mp25 = data['RV3']
+    X = data[['Temperatura Media', 'fecha_num']]
+    y_so2 = data['SO2']
+    y_mp10 = data['MP10']
+    y_mp25 = data['MP2.5']
 
     # Entrenar modelos
     def train_model(X, y):

@@ -179,10 +179,14 @@ def eliminar_outliers(
     return df_sin_outliers
 
 
+import pandas as pd
+from typeguard import typechecked
+
+
 @typechecked
 def sparseDates(
-    df: pd.DataFrame,
-    columna_fecha: str
+        df: pd.DataFrame,
+        columna_fecha: str
 ) -> pd.DataFrame:
     """
     Separa una columna fecha en sus componentes.
@@ -192,8 +196,12 @@ def sparseDates(
     columna_fecha (str): El nombre de la columna que pueda convertirse en una fecha.
 
     Retorna:
-    pandas.DataFrame: El DataFrame con las columnas de componentes de fecha y una columna nueva representada por una fecha convertible a tipo de dato numérico
+    pandas.DataFrame: El DataFrame con las columnas de componentes de fecha y una columna nueva representada por una fecha convertible a tipo de dato numérico.
 
+    Raises:
+    TypeError: Si 'df' no es un DataFrame o 'columna_fecha' no es un string.
+    ValueError: Si 'columna_fecha' no existe en el DataFrame.
+    RuntimeError: Si ocurre un error al convertir o separar la columna de fecha.
     """
     if not isinstance(df, pd.DataFrame):
         raise TypeError("El parámetro 'df' debe ser un DataFrame de pandas.")
@@ -203,9 +211,17 @@ def sparseDates(
         raise ValueError(f"La columna '{columna_fecha}' no existe en el DataFrame.")
 
     try:
-        df['fecha'] = pd.to_datetime(df[columna_fecha])
-        df['fecha-num'] = df['fecha'].dt.year+df['fecha'].dt.month+df['fecha'].dt.day
+        df['fecha'] = pd.to_datetime(df[columna_fecha], errors='coerce')
 
+        # Verificar si alguna fecha no pudo ser convertida
+        if df['fecha'].isna().any():
+            invalid_dates = df[df['fecha'].isna()][columna_fecha].tolist()
+            raise ValueError(f"Las siguientes fechas no pudieron ser convertidas: {invalid_dates}")
+
+        year = df['fecha'].dt.year
+        month = df['fecha'].dt.month
+        day = df['fecha'].dt.day
+        df['Fecha'] = year * 10000 + month * 100 + day
 
     except Exception as e:
         raise RuntimeError(f"Error al separar la columna fecha: {e}")

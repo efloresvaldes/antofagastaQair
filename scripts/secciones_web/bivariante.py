@@ -1,11 +1,13 @@
 import streamlit as st
-
 import plotly.express as px
 import plotly.graph_objects as go
 import statsmodels.api as sm
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
 
-
-def main(data,variables):
+def main(data, variables):
     # Título de la aplicación
     st.title("Análisis Bivariante")
 
@@ -35,34 +37,26 @@ def main(data,variables):
         var1, var2 = selected_variables
         st.subheader(f"Análisis Bivariante entre {var1} y {var2}")
 
-        # Crear contenedor de columnas para los gráficos
-        cols = st.columns(2)
-        col_index = 0
-
         for chart_type in selected_chart_types:
-            with cols[col_index]:
-                if chart_type == "Scatter Plot":
-                    fig = px.scatter(data, x=var1, y=var2, title=f"Scatter Plot de {var1} vs {var2}")
-                    st.plotly_chart(fig)
+            if chart_type == "Scatter Plot":
+                fig = px.scatter(data, x=var1, y=var2, title=f"Scatter Plot de {var1} vs {var2}")
+                st.plotly_chart(fig)
 
-                elif chart_type == "Line Plot":
-                    fig = px.line(data, x=var1, y=var2, title=f"Line Plot de {var1} vs {var2}")
-                    st.plotly_chart(fig)
+            elif chart_type == "Line Plot":
+                fig = px.line(data, x=var1, y=var2, title=f"Line Plot de {var1} vs {var2}")
+                st.plotly_chart(fig)
 
-                elif chart_type == "Histogram 2D":
-                    fig = px.density_heatmap(data, x=var1, y=var2, title=f"Histogram 2D de {var1} vs {var2}")
-                    st.plotly_chart(fig)
+            elif chart_type == "Histogram 2D":
+                fig = px.density_heatmap(data, x=var1, y=var2, title=f"Histogram 2D de {var1} vs {var2}")
+                st.plotly_chart(fig)
 
-                elif chart_type == "Density Plot":
-                    fig = px.density_contour(data, x=var1, y=var2, title=f"Density Plot de {var1} vs {var2}")
-                    st.plotly_chart(fig)
+            elif chart_type == "Density Plot":
+                fig = px.density_contour(data, x=var1, y=var2, title=f"Density Plot de {var1} vs {var2}")
+                st.plotly_chart(fig)
 
-                elif chart_type == "Regresión Lineal":
-                    plot_regression(var1, var2, data)
-
-            # Alternar entre las dos columnas
-            col_index = (col_index + 1) % 2
+            elif chart_type == "Regresión Lineal":
+                plot_regression(var1, var2, data)
 
     # Mostrar los datos en una tabla editable
-    st.subheader("Datos")
+    st.subheader("Conjunto de Datos")
     st.dataframe(data)

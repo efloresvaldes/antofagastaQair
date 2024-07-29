@@ -1,23 +1,11 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
-import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-import scipy.stats as stats
 import plotly.express as px
-import plotly.graph_objects as go
-import statsmodels.api as sm
-from datetime import datetime, timedelta
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
+import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
-import utils.cleaning_data_functions as cdf
 
-def main(data,variables):
-
-
+def main(data, variables):
     # Título de la aplicación
     st.title("Análisis de Correlación")
 
@@ -40,29 +28,21 @@ def main(data,variables):
 
         show_correlation_matrix(data, selected_variables)
 
-        # Crear contenedor de columnas para los gráficos
-        cols = st.columns(2)
-        col_index = 0
-
         for chart_type in selected_chart_types:
-            with cols[col_index]:
-                if chart_type == "Heatmap":
-                    fig, ax = plt.subplots()
-                    sns.heatmap(data[selected_variables].corr(), annot=True, cmap='coolwarm', ax=ax)
-                    ax.set_title("Heatmap de la Matriz de Correlación")
-                    st.pyplot(fig)
+            if chart_type == "Heatmap":
+                fig, ax = plt.subplots()
+                sns.heatmap(data[selected_variables].corr(), annot=True, cmap='coolwarm', ax=ax)
+                ax.set_title("Heatmap de la Matriz de Correlación")
+                st.pyplot(fig)
 
-                elif chart_type == "Pairplot":
-                    fig = sns.pairplot(data[selected_variables])
-                    st.pyplot(fig)
+            elif chart_type == "Pairplot":
+                fig = sns.pairplot(data[selected_variables])
+                st.pyplot(fig)
 
-                elif chart_type == "Scatter Matrix":
-                    fig = px.scatter_matrix(data[selected_variables], title="Scatter Matrix")
-                    st.plotly_chart(fig)
-
-            # Alternar entre las dos columnas
-            col_index = (col_index + 1) % 2
+            elif chart_type == "Scatter Matrix":
+                fig = px.scatter_matrix(data[selected_variables], title="Scatter Matrix")
+                st.plotly_chart(fig)
 
     # Mostrar los datos en una tabla editable
-    st.subheader("Datos")
+    st.subheader("Conjunto de Datos")
     st.dataframe(data)

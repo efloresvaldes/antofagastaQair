@@ -98,7 +98,7 @@ def entrenar_modelo_randomforest(
 
     if target not in df.columns:
         raise ValueError(f"La columna objetivo '{target}' no existe en el DataFrame.")
-    if not all(f in df.columns for f in features):
+    if not (f in df.columns for f in features):
         raise ValueError("Una o más columnas de características no existen en el DataFrame.")
 
     X = df[features]
@@ -189,7 +189,7 @@ def regresion_lineal_polinomica(
 
     print(f'Error Cuadrático Medio (MSE): {mse}')
     print(f'Error Absoluto Medio (MAE): {mae}')
-    print(f'Coeficiente de Determinación (R²): {r2}')
+    print(f'Coeficiente de Determinación (R2): {r2}')
 
     return {
         'coeficientes': model.coef_,
