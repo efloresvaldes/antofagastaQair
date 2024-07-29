@@ -1,25 +1,15 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-import scipy.stats as stats
+
 import plotly.express as px
 import plotly.graph_objects as go
 import statsmodels.api as sm
-from datetime import datetime, timedelta
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
 
-def main(data):
+
+def main(data,variables):
     # Título de la aplicación
     st.title("Análisis Bivariante")
 
     # Selección de variables
-    variables = data.columns.tolist()
     selected_variables = st.multiselect("Selecciona dos variables para el análisis", variables, variables[:2])
 
     # Selección de tipos de gráficos

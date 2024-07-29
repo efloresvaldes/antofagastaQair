@@ -7,8 +7,10 @@ import secciones_web.univariante as univariante_section
 import secciones_web.bivariante as bivariante_section
 import secciones_web.correlacion as correlacion_section
 import secciones_web.qair as qair_section
+import utils.cleaning_data_functions as cdf
 
 df = pd.read_csv('../data/qair.csv', delimiter=';')
+variables_a_considerar = ['Temperatura Media', 'RV1', 'RV2', 'RV3']
 
 # Título de la aplicación
 st.title("Datos de Calidad del Aire en Antofagasta")
@@ -39,16 +41,11 @@ with st.sidebar:
 if selected == "Inicio":
     home_section.main()
 elif selected == "Análisis Univariante":
-    columns = ['Temperatura Media', 'RV1', 'RV2', 'RV3']
-    univariante_section.main(df, columns)
-
+    univariante_section.main(df, variables_a_considerar)
 elif selected == "Análisis Bivariante":
-    bivariante_section.main(df)
-
-
+    bivariante_section.main(df, variables_a_considerar)
 elif selected == "Análisis de Correlación":
-    correlacion_section.main(df)
-
-
+    correlacion_section.main(df, ['Temperatura Media', 'RV1', 'RV2', 'RV3'])
 elif selected == "Estimación QAir":
+    df = cdf.sparseDates(df, 'Fecha')
     qair_section.main(df)

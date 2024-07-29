@@ -1,31 +1,19 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
-import scipy.stats as stats
-import plotly.express as px
-import plotly.graph_objects as go
-import statsmodels.api as sm
 from datetime import datetime, timedelta
-from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
+
 def main(data):
-
-
     # Preparar los datos
-    data['Fecha'] = pd.to_datetime(data['Fecha'])
-    data['DayOfYear'] = data['Fecha'].dt.dayofyear
 
-    X = data[['Temperatura Media', 'DayOfYear']]
-    y_so2 = data['SO2']
-    y_mp10 = data['MP10']
-    y_mp25 = data['MP2.5']
-
+    X = data[['Temperatura Media', 'fecha-num']]
+    y_so2 = data['RV1']
+    y_mp10 = data['RV2']
+    y_mp25 = data['RV3']
 
     # Entrenar modelos
     def train_model(X, y):
@@ -34,11 +22,9 @@ def main(data):
         model.fit(X_train, y_train)
         return model
 
-
     model_so2 = train_model(X, y_so2)
     model_mp10 = train_model(X, y_mp10)
     model_mp25 = train_model(X, y_mp25)
-
 
     # Predecir valores futuros
     def predict_future(model, temp, start_date, days):
@@ -50,7 +36,6 @@ def main(data):
             predictions.append((future_date, pred))
         return predictions
 
-
     # Calcular el Índice de Calidad del Aire (QAI)
     def calculate_qai(so2, mp10, mp25):
         # Simplificación del cálculo de QAI
@@ -58,7 +43,6 @@ def main(data):
         qai_mp10 = np.clip(mp10 / 2, 0, 500)
         qai_mp25 = np.clip(mp25 / 2, 0, 500)
         return max(qai_so2, qai_mp10, qai_mp25)
-
 
     # Crear la aplicación Streamlit
     st.title("Predicción de la Calidad del Aire")
@@ -100,4 +84,3 @@ def main(data):
     plt.ylabel("Concentración / QAI")
     plt.title("Predicciones de SO2, MP10, MP2.5 y QAI")
     st.pyplot(fig)
-

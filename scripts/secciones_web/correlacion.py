@@ -13,13 +13,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
+import utils.cleaning_data_functions as cdf
 
-def main(data):
+def main(data,variables):
+
+
     # Título de la aplicación
     st.title("Análisis de Correlación")
 
     # Selección de variables
-    variables = data.columns.tolist()
     selected_variables = st.multiselect("Selecciona variables para el análisis", variables, variables[:4])
 
     # Selección de tipos de gráficos

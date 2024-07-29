@@ -192,7 +192,8 @@ def sparseDates(
     columna_fecha (str): El nombre de la columna que pueda convertirse en una fecha.
 
     Retorna:
-    pandas.DataFrame: El DataFrame con las columnas de componentes de fecha.
+    pandas.DataFrame: El DataFrame con las columnas de componentes de fecha y una columna nueva representada por una fecha convertible a tipo de dato numérico
+
     """
     if not isinstance(df, pd.DataFrame):
         raise TypeError("El parámetro 'df' debe ser un DataFrame de pandas.")
@@ -203,9 +204,9 @@ def sparseDates(
 
     try:
         df['fecha'] = pd.to_datetime(df[columna_fecha])
-        df['year'] = df['fecha'].dt.year
-        df['mes'] = df['fecha'].dt.month
-        df['day'] = df['fecha'].dt.day
+        df['fecha-num'] = df['fecha'].dt.year+df['fecha'].dt.month+df['fecha'].dt.day
+
+
     except Exception as e:
         raise RuntimeError(f"Error al separar la columna fecha: {e}")
 
